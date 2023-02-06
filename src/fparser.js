@@ -310,10 +310,8 @@ export default class Formula {
                         this.registerVariable(tmp);
                         tmp = '';
                         state = 0;
-                    } else if (char.match(/[a-zA-Z0-9_]/)) {
-                        tmp += char;
                     } else {
-                        throw new Error('Character not allowed within named variable: ' + char);
+                        tmp += char;
                     }
                     break;
 
@@ -685,7 +683,8 @@ class VariableExpression extends Expression {
         // a varname found in the params, return the value.
         // eg: params = {x: 5,y:3}, varname = x, return 5
         if (params[this.varName] !== undefined) {
-            return Number(params[this.varName]);
+            let numValue = Number(params[this.varName]);
+            return isNaN(numValue) ? params[this.varName] : numValue;
         } else {
             throw new Error('Cannot evaluate ' + this.varName + ': No value given');
         }
